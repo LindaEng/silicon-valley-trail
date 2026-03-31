@@ -58,3 +58,15 @@ def choose_team(characters):
 
         except (ValueError, IndexError):
             print("Invalid input. Try again.\n")
+
+def check_team(state):
+    print("\n Your team: ")
+
+    for i, member in enumerate(state.team):
+        print(f"{i}: {member}")
+
+    choice = int(input("Who do you want to check on? "))
+
+    selected = state.team[choice]
+
+    print(f"\nChecking on {selected}")

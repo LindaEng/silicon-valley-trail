@@ -16,10 +16,11 @@ def main():
 
     elif choice == "2":
         print("continue game")
+        #get saved game from db and load it
 
     engine = GameEngine(state)
     engine.run()
-    
+
     conn.close()
 
 if __name__ == "__main__":
