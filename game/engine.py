@@ -6,7 +6,7 @@ class GameEngine:
 
     def step(self):
         print(f"\nDay: {self.state.day}")
-        print(f"\nLocation: {self.state.location}")
+        print(f"\nLocation: {self.state.location["name"]}")
         print("\nWhat would you like to do?")
         print("1. Explore area")
         print("2. Check in with team")
