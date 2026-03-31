@@ -4,69 +4,79 @@
     "skill": 9,
     "caffeine": 8,
     "cost": 5,
-    "moraleImpact": -1
+    "moraleImpact": -1,
+    "health": 100
   },
   {
     "name": "VC Whisperer",
     "skill": 3,
     "caffeine": 3,
     "cost": 8,
-    "moraleImpact": 1
+    "moraleImpact": 1,
+    "health": 100
   },
   {
     "name": "Zen Dev",
     "skill": 6,
     "caffeine": 2,
     "cost": 4,
-    "moraleImpact": 3
+    "moraleImpact": 3,
+    "health": 100
   },
   {
     "name": "l337 master",
     "skill": 8,
     "caffeine": 6,
     "cost": 5,
-    "moraleImpact": -3
+    "moraleImpact": -3,
+    "health": 100
   },
   {
     "name": "Bug Magnet",
     "skill": 2,
     "caffeine": 4,
     "cost": 2,
-    "moraleImpact": -1
+    "moraleImpact": -1,
+    "health": 100
   },
   {
     "name": "Cracked Engineer",
     "skill": 10,
     "caffeine": 9,
     "cost": 9,
-    "moraleImpact": -2
+    "moraleImpact": -2,
+    "health": 100
   },
   {
     "name": "Coffee Addict",
     "skill": 3,
     "caffeine": 10,
     "cost": 2,
-    "moraleImpact": -1
+    "moraleImpact": -1,
+    "health": 100
   },
   {
     "name": "Intern",
     "skill": 2,
     "caffeine": 3,
     "cost": 1,
-    "moraleImpact": 0
+    "moraleImpact": 0,
+    "health": 100
   },
   {
     "name": "Product Manager",
     "skill": 5,
     "caffeine": 2,
     "cost": 4,
-    "moraleImpact": 2
+    "moraleImpact": 2,
+    "health": 100
   },
   {
-    "name": "Wildcard",
-    "skill": 5,
+    "name": "Vibe Coder",
+    "skill": 1,
     "caffeine": 5,
-    "cost": 3,
-    "moraleImpact": 0
+    "cost": 7,
+    "moraleImpact": 0,
+    "health": 100
   }
 ]
