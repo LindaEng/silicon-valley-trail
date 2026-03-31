@@ -4,12 +4,22 @@ def load_characters():
     return load_json("data/characters.json")
 
 def choose_team(characters):
-    print("Choose your team (enter indices, comma separated):")
+    while True:
+        print("Choose your team (at least 5, comma separated indices):")
 
-    for i, char in enumerate(characters):
-        print(f"{i}: {char['name']}")
+        for i, char in enumerate(characters):
+            print(f"{i}: {char['name']}")
 
-    choices = input("Your team: ")
-    indices = [int(i.strip()) for i in choices.split(",")]
+        choices = input("Your team: ")
 
-    return [characters[i]["name"] for i in indices]
+        try:
+            indices = [int(i.strip()) for i in choices.split(",")]
+
+            if len(indices) < 5:
+                print("Please select at least 5 characters.\n")
+                continue
+
+            return [characters[i]["name"] for i in indices]
+
+        except (ValueError, IndexError):
+            print("Invalid input. Try again.\n")
