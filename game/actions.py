@@ -61,12 +61,15 @@ def choose_team(characters):
 
 def check_team(state):
     print("\n Your team: ")
-
     for i, member in enumerate(state.team):
-        print(f"{i}: {member}")
+        print("=================")
+        print(f"{i}: \n")
+        print(f"Name: {member['name']}: \n"
+              f"Health: {member['health']} \n"
+              f"Caffeine {member['caffeine']} \n"
+              f"Cost: {member['cost']} \n"
+              f"Morale Impact: {member['moraleImpact']} \n"
+              )
+       
 
-    choice = int(input("Who do you want to check on? "))
 
-    selected = state.team[choice]
-
-    print(f"\nChecking on {selected}")
