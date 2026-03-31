@@ -1,9 +1,10 @@
 class GameState:
-    def __init__(self, cash=1000, morale=100, team=None, location="start"):
+    def __init__(self, cash=1000, morale=100, team=None, location="start", day=1):
         self.cash = cash
         self.morale = morale
         self.team = team or []
         self.location = location
+        self.day = day
     
     def to_dict(self):
         return {
