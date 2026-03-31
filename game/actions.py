@@ -72,4 +72,13 @@ def check_team(state):
               )
        
 
+def explore_city(location):
+    print("=================")
+    print("\n What would you like to do? \n")
+    print("1. Find Coffee Shops \n")
+    print("2. Venues to speak at \n")
+    print("3. Team Boost \n")
 
+    choice = input("Your choice: Input number")
+
+    return choice
