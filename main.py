@@ -7,17 +7,19 @@ from game.engine import GameEngine
 def main():
     conn = get_connection()
     init_db(conn)
-
     print("starting game")
-
     choice = load_splash()
-
+    state = None
     if choice == "1":
-        start_new_game(conn)
-    
+        print("STARTTTT ")
+        state = start_new_game()
+
     elif choice == "2":
         print("continue game")
 
+    engine = GameEngine(state)
+    engine.run()
+    
     conn.close()
 
 if __name__ == "__main__":

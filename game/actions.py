@@ -1,5 +1,6 @@
 from utils.loader import load_json
 from pathlib import Path
+from game.state import GameState
 
 
 def load_splash():
@@ -12,9 +13,26 @@ def load_splash():
           "2. Continue\n")
     
     choice = input("Choose an Option: ")
-
     return choice
-          
+
+
+def start_new_game():
+    print("\n---New Game---")
+
+    print("\nYou are setting out on a journey through Silicon Valley...")
+    print("Build your team. Navigate the chaos. Ship or die.\n")
+    print("But first -- where would you like to start?\n")
+
+    # first_state = GameState()
+    location = input("Enter location ")
+    print("You chose: ", location)
+    print("------------------------------")
+    print("Lets choose your dream team! ")
+    team = choose_team(load_characters())
+    print(team)
+    new_game_state = GameState(team = team, location = location)
+    print("THIS IS YOUR FINAL TEAM ", new_game_state.to_dict())
+    return new_game_state
 
 
 def load_characters():
@@ -36,7 +54,7 @@ def choose_team(characters):
                 print("Please select at least 5 characters.\n")
                 continue
 
-            return [characters[i]["name"] for i in indices]
+            return [characters[i] for i in indices]
 
         except (ValueError, IndexError):
             print("Invalid input. Try again.\n")
