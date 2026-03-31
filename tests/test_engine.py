@@ -15,4 +15,4 @@ def test_run_advances_multiple_days():
 
     engine.run()
 
-    assert state.day == 6  # since loop runs until day <= 5
+    assert state.day == 6  
