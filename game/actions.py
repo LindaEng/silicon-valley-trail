@@ -1,6 +1,7 @@
 from utils.loader import load_json
 from pathlib import Path
 from game.state import GameState
+from services.map_service import get_location
 
 
 def load_splash():
@@ -25,12 +26,17 @@ def start_new_game():
 
     # first_state = GameState()
     location = input("Enter location ")
-    print("You chose: ", location)
+    location_data = get_location(location)
+    if location_data:
+
+        print("You chose: ", location)
+    else:
+        print("Location not found, using raw input")
     print("------------------------------")
     print("Lets choose your dream team! ")
     team = choose_team(load_characters())
     print(team)
-    new_game_state = GameState(team = team, location = location)
+    new_game_state = GameState(team = team, location = location_data or {"name": location})
     print("THIS IS YOUR FINAL TEAM ", new_game_state.to_dict())
     return new_game_state
 
