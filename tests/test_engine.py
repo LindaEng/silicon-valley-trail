@@ -8,3 +8,11 @@ def test_step_increments_day():
     engine.step()
 
     assert state.day == 2
+
+def test_run_advances_multiple_days():
+    state = GameState(day=1)
+    engine = GameEngine(state)
+
+    engine.run()
+
+    assert state.day == 6  # since loop runs until day <= 5
