@@ -95,4 +95,6 @@ def explore_city(location):
     elif choice == "3":
         get_nearby(["bar"],location["lat"], location["lon"])
     elif choice == "0":
-        return
+        return "menu"
+    else:
+        print("Invalid choice")

@@ -14,8 +14,9 @@ class GameEngine:
 
         choice = input("Choose: ")
 
-        self.handle_choice(choice)
-
+        result = self.handle_choice(choice)
+        if result == "menu":
+            return
         # self.state.day += 1       
 
     def handle_choice(self, choice):
@@ -23,9 +24,10 @@ class GameEngine:
             explore_city(self.state.location)
         elif choice == "2":
             check_team(self.state)
+            return "menu"
         elif choice == "3":
             print("STUB IN FOR NEXT DESTINATION")
-        self.menu = True
+            return "menu"
         
 
     def run(self):
