@@ -1,7 +1,7 @@
 from utils.loader import load_json
 from pathlib import Path
 from game.state import GameState
-from services.map_service import get_location
+from services.map_service import get_location, get_nearby
 
 
 def load_splash():
@@ -84,7 +84,15 @@ def explore_city(location):
     print("1. Find Coffee Shops \n")
     print("2. Venues to speak at \n")
     print("3. Team Boost \n")
+    print("press 0. to back to menu ")
 
-    choice = input("Your choice: Input number")
+    choice = input("Your choice: Input number ")
 
-    return choice
+    if choice == "1":
+        get_nearby(["cafe", "restaurant"],location["lat"], location["lon"])
+    elif choice == "2":
+        get_nearby(["coworking_space"],location["lat"], location["lon"])
+    elif choice == "3":
+        get_nearby(["bar"],location["lat"], location["lon"])
+    elif choice == "0":
+        return

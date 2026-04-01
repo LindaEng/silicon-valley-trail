@@ -1,2 +1,1 @@
-
-        print("Continue game")
+    main()

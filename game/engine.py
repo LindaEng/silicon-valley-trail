@@ -1,4 +1,4 @@
-from game.actions import check_team
+from game.actions import check_team, explore_city
 
 class GameEngine:
     def __init__(self, state):
@@ -15,17 +15,23 @@ class GameEngine:
         choice = input("Choose: ")
 
         self.handle_choice(choice)
+
         # self.state.day += 1       
 
     def handle_choice(self, choice):
         if choice == "1":
-            print("STUB IN FOR MAPS")
+            explore_city(self.state.location)
         elif choice == "2":
             check_team(self.state)
         elif choice == "3":
             print("STUB IN FOR NEXT DESTINATION")
+        self.menu = True
+        
 
     def run(self):
         print("-------- GAME START ------- \n")
         while True:
             self.step()
+
+
+            
