@@ -9,16 +9,16 @@ def main():
     init_db(conn)
     print("starting game")
     choice = load_splash()
+
     state = None
+
     if choice == "1":
         print("STARTTTT ")
         state = start_new_game()
 
     elif choice == "2":
         print("Continue game")
-
         saves = list_saves(conn)
-
         if not saves:
             print("No saved games found.")
             state = start_new_game()
@@ -26,9 +26,7 @@ def main():
             print("\nAvailable saves:")
             for row in saves:
                 print(f"{row[0]}: {row[1]} (created at {row[2]})")
-
             slot = input("Choose save slot to load from: ")
-
             try:
                 slot = int(slot)
                 state = load_game(conn, slot)

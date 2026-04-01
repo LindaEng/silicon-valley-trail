@@ -76,6 +76,11 @@ def check_team(state):
               f"Cost: {member['cost']} \n"
               f"Morale Impact: {member['moraleImpact']} \n"
               )
+    back = input("Go back to menu? y/n: ")
+    if back == "y":
+        return "menu"
+    else:
+        check_team(state)
        
 
 def explore_city(location):
@@ -84,7 +89,7 @@ def explore_city(location):
     print("1. Find Coffee Shops \n")
     print("2. Venues to speak at \n")
     print("3. Team Boost \n")
-    print("press 0. to back to menu ")
+    print("4. Back to Menu")
 
     choice = input("Your choice: Input number ")
 
@@ -94,7 +99,8 @@ def explore_city(location):
         get_nearby(["coworking_space"],location["lat"], location["lon"])
     elif choice == "3":
         get_nearby(["bar"],location["lat"], location["lon"])
-    elif choice == "0":
+    elif choice == "4":
         return "menu"
     else:
         print("Invalid choice")
+

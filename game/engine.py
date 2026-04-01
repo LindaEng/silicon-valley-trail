@@ -19,7 +19,7 @@ class GameEngine:
         if result == "menu":
             return
         if result == "exit":
-            return exit
+            return "exit"
         # self.state.day += 1       
 
     def handle_choice(self, choice):
@@ -30,10 +30,12 @@ class GameEngine:
             return "menu"
         elif choice == "3":
             print("STUB IN FOR NEXT DESTINATION")
-            return "menu"
         elif choice == "4":
             return "exit"
         
+    
+    def back_to_menu():
+        return "menu"
 
     def run(self):
         print("-------- GAME START ------- \n")
@@ -41,7 +43,7 @@ class GameEngine:
             result = self.step()
             if result == "exit":
                 print("Exiting game...")
-                break
+                return "exit"
 
 
 
