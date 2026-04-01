@@ -11,7 +11,8 @@ class GameState:
             "cash": self.cash,
             "morale": self.morale,
             "team": self.team,
-            "location": self.location
+            "location": self.location,
+            "day": self.day
         }
     
     @staticmethod

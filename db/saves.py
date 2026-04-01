@@ -27,7 +27,7 @@ def load_game(conn, save_id):
 
 def list_saves(conn):
     rows = conn.execute(
-        "SELECT id, name, created_at FROM saves"
+        "SELECT id, name, state created_at FROM saves"
     ).fetchall()
 
     return rows

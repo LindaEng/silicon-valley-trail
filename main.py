@@ -15,11 +15,33 @@ def main():
         state = start_new_game()
 
     elif choice == "2":
-        print("continue game")
-        #get saved game from db and load it
+        print("Continue game")
+
+        saves = list_saves(conn)
+
+        if not saves:
+            print("No saved games found.")
+            state = start_new_game()
+        else:
+            print("\nAvailable saves:")
+            for row in saves:
+                print(f"{row[0]}: {row[1]} (created at {row[2]})")
+
+            slot = input("Choose save slot to load from: ")
+
+            try:
+                slot = int(slot)
+                state = load_game(conn, slot)
+            except:
+                print("Invalid selection, starting new game.")
+                state = start_new_game()
 
     engine = GameEngine(state)
-    engine.run()
+    result = engine.run()
+
+    if result == "exit":
+        save_game(conn, state)
+        print("Game saved!! ")
 
     conn.close()
 
