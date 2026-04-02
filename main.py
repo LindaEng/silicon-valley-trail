@@ -4,6 +4,8 @@ from game.actions import load_splash, start_new_game, load_characters, choose_te
 from game.state import GameState
 from game.engine import GameEngine
 
+import json
+
 def main():
     conn = get_connection()
     init_db(conn)
@@ -25,7 +27,8 @@ def main():
         else:
             print("\nAvailable saves:")
             for row in saves:
-                print(f"{row[0]}: {row[1]} (created at {row[2]})")
+                data = json.loads(row[2])
+                print(f"Slot {row[0]}: Location: {data['location']['name']}, Day: {data['day']}")
             slot = input("Choose save slot to load from: ")
             try:
                 slot = int(slot)

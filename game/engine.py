@@ -13,7 +13,9 @@ class GameEngine:
         print("2. Check in with team")
         print("3. Next destination")
         print("4. Save and Quit")
-
+        # Only show if we went to more than 5 locations
+        if len(self.state.locations_visited) > 5:
+            print("5. Attempt IPO")
         choice = input("Choose: ")
 
         result = self.handle_choice(choice)
@@ -33,6 +35,11 @@ class GameEngine:
             update_to_next_location(self.state)
         elif choice == "4":
             return "exit"
+        elif choice == "5" and len(self.state.locations_visited) > 5:
+            print("STUB IN FOR IPO")
+        else:
+            print("invalid choice")   
+            return "menu"
         
     def print_summary(self):
         print(f"Day: {self.state.day}\n")
@@ -40,13 +47,17 @@ class GameEngine:
         print(f"Funding: {self.state.funding:.2f}\n")
         print(f"Morale: {self.state.morale}\n")
         print(f"Popularity: {self.state.popularity}\n")
+        print("========================================")
+        print("Cities that you have visited so far: ")
+        for i, loc in enumerate(self.state.locations_visited):
+            print(f"{i}: {loc}")
         
 
-    def check_game_over(state):
-        if state.funding <= 0:
+    def check_game_over(self):
+        if self.state.funding <= 0:
             print("You ran out of money... Game over")
             return True
-        if len(state.team) == 0:
+        if len(self.state.team) == 0:
             print("Everyone decided to quit... Game over")
             return True
         return False

@@ -6,6 +6,7 @@ class GameState:
         self.location = location or {"name": "unknown"}
         self.team = team or []
         self.day = day
+        self.locations_visited = []
     
     def to_dict(self):
         return {

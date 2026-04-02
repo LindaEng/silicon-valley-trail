@@ -1,5 +1,6 @@
 from utils.loader import load_json
 from utils.calc import calc_popularity_increase, calc_morale_increase, calc_funding_increase, calc_restaurant_cost, calc_morale_decrease,  calc_popularity_decay, calc_distance, calc_fun_cost
+from utils.display import print_character
 from pathlib import Path
 from game.state import GameState
 from services.map_service import get_location, get_nearby
@@ -40,6 +41,7 @@ def start_new_game():
     team = choose_team(load_characters())
     print(team)
     new_game_state = GameState(team = team, location = location_data or {"name": location})
+    new_game_state.locations_visited.append(location)
     print("THIS IS YOUR FINAL TEAM ", new_game_state.to_dict())
     return new_game_state
 
@@ -48,23 +50,34 @@ def load_characters():
     return load_json("data/characters.json")
 
 def choose_team(characters):
-    while True:
+    retries = 3
+    while retries > 0:
         print("Choose your team (at least 5, comma separated indices):")
 
-        for i, char in enumerate(characters):
-            print(f"{i}: {char['name']}")
+        for character in characters:
+            print_character(character)
 
-        choices = input("Your team: ")
+        input(f"We will randomly select a group of 5 players. You have {retries} retries. press any key to continue")
 
         try:
-            indices = [int(i.strip()) for i in choices.split(",")]
-
-            if len(indices) < 5:
-                print("Please select at least 5 characters.\n")
-                continue
-
-            return [characters[i] for i in indices]
-
+            print("Finding your dream team ... ")
+            time.sleep(2)
+            team = random.sample(characters, 5)
+            print("Here is the team! ")
+            for member in team:
+                print_character(member)
+            choice = input(f"Do you accept this team? press 'y' to accept or 'n' to re-pick team. {retries - 1} left.")
+            if choice == 'y':
+                return team
+            retries -= 1
+            print("Let's try to find a better team... ")
+            time.sleep(2)
+            if retries == 0:
+                print("No more retries - assigning final team")
+                time.sleep(2)
+                for member in team:
+                    print_character(member)
+                return team
         except (ValueError, IndexError):
             print("Invalid input. Try again.\n")
 
@@ -200,10 +213,14 @@ def update_to_next_location(state):
         print("Location not found.")
         return
 
-    print(f"\nTraveling to {found_location['name']}...")
+    print(f"\nTraveling from {state.location['name']} to {found_location['name']}...")
+
+    state.locations_visited.append(new_location)
     time.sleep(2)
+
     # --- COST ---
-    travel_cost = calc_distance(state.location, found_location) * len(state.team)
+    distance_traveled = calc_distance(state.location, found_location)
+    travel_cost = distance_traveled * len(state.team)
     if state.funding < travel_cost:
         print("Location too expensive, try somewhere closer...")
         return
@@ -215,13 +232,17 @@ def update_to_next_location(state):
     for member in state.team:
         member["productivity"] = max(member["productivity"] - random.uniform(0.5, 2), 0)
         member["motivation"] = max(member["motivation"] - random.uniform(1, 3), 0)
-
         if member["motivation"] <= 0:
             leavers.append(member)
 
     avg_morale = (sum(m["motivation"] for m in state.team) / len(state.team)) / 100 
-    state.morale = state.morale * avg_morale
+    # --- MORALE ----
+
+    state.morale -= random.uniform(1,10) - (state.morale * avg_morale)
+
+    # --- POPULARITY ---
     state.popularity -= random.uniform(5,10)
+
     # --- REMOVE MEMBERS WITH 0 MORALE ---
 
     # print who left
@@ -231,14 +252,15 @@ def update_to_next_location(state):
     # update team
     state.team = [m for m in state.team if m["motivation"] > 0]
     
-    # --- UPDATE LOCATION ---
+    # --- UPDATE LOCATION AND DAY ---
     state.location = found_location
+    state.day += 1
     time.sleep(2)
     print(f"Welcome to: {found_location['name']}")
     print(f"Travel cost: ${travel_cost:.2f}")
     print(f"Remaining team members: {len(state.team)}")
-    print(f"Team Health = \n",
+    print(f" Team Health = \n",
           f" Funding: {state.funding:.2f}\n"
-          f" Morale: {state.morale}\n"
-          f" popularity: {state.morale}\n"
+          f" Morale: {state.morale:.2f}\n"
+          f" popularity: {state.morale:.2f}\n"
           f" Day: {state.day}\n")
