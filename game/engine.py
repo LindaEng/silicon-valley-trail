@@ -5,6 +5,8 @@ class GameEngine:
         self.state = state
 
     def step(self):
+        if self.check_game_over() == True:
+            return "exit"
         self.print_summary()
         print("\nWhat would you like to do?")
         print("1. Explore area")
@@ -39,6 +41,15 @@ class GameEngine:
         print(f"Morale: {self.state.morale}\n")
         print(f"Popularity: {self.state.popularity}\n")
         
+
+    def check_game_over(state):
+        if state.funding <= 0:
+            print("You ran out of money... Game over")
+            return True
+        if len(state.team) == 0:
+            print("Everyone decided to quit... Game over")
+            return True
+        return False
 
     def back_to_menu():
         return "menu"

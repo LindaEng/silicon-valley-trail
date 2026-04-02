@@ -219,14 +219,10 @@ def update_to_next_location(state):
         if member["motivation"] <= 0:
             leavers.append(member)
 
-    avg_morale = (sum(m["motivation"] for m in state.team) / len(state.team)) / 100
-
+    avg_morale = (sum(m["motivation"] for m in state.team) / len(state.team)) / 100 
     state.morale = state.morale * avg_morale
-
     state.popularity -= random.uniform(5,10)
-
     # --- REMOVE MEMBERS WITH 0 MORALE ---
-
 
     # print who left
     for m in leavers:
