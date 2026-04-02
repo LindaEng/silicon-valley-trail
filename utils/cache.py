@@ -1,38 +1,26 @@
 CATEGORIES = {
     "restaurants": [
-        "restaurant",
-        "cafe",
-        "fast_food",
-        "food_court",
-        "bakery",
-        "coffee",
-        "pizza",
-        "diner"
+        ("amenity", "restaurant"),
+        ("amenity", "cafe"),
+        ("amenity", "fast_food"),
+        ("amenity", "food_court"),
+        ("shop", "bakery")
     ],
 
     "events": [
-        "coworking",
-        "library",
-        "community_centre",
-        "conference_center",
-        "event_space",
-        "university",
-        "college",
-        "auditorium",
-        "exhibition_center",
-        "business_center"
+        ("amenity", "library"),
+        ("amenity", "community_centre"),
+        ("amenity", "university"),
+        ("amenity", "college"),
+        ("amenity", "conference_centre")
     ],
 
     "fun": [
-        "bar",
-        "pub",
-        "nightclub",
-        "cinema",
-        "park",
-        "arcade",
-        "theatre",
-        "museum",
-        "bowling",
-        "stadium"
+        ("amenity", "bar"),
+        ("amenity", "pub"),
+        ("amenity", "nightclub"),
+        ("leisure", "park"),
+        ("tourism", "museum"),
+        ("amenity", "cinema")
     ]
 }

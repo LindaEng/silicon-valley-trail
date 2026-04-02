@@ -13,7 +13,7 @@ def calc_funding_increase(state):
     prod = sum(m["productivity"] for m in state.team) / len(state.team)
     morale = sum(m["moraleImpact"] for m in state.team) / len(state.team)
 
-    return round((1000 * (prod/10) * (1 + morale/10) * random.uniform(0.9, 1.1)),2)
+    return round((100000 * (prod/10) * (1 + morale/10) * random.uniform(0.5, 5)),2)
 
 def calc_restaurant_cost(state):
     return round((random.uniform(6, 25) * len(state.team)),2)
@@ -21,8 +21,8 @@ def calc_restaurant_cost(state):
 def calc_fun_cost(state):
     return round((random.uniform(10, 50) * len(state.team)),2)
 
-def calc_morale_decrease(state):
-    return round(random.uniform(1,5) * len(state.team))
+def calc_morale_decrease():
+    return round(random.uniform(1,3))
 
 def calc_popularity_decay(state):
     avg_morale = sum(m["moraleImpact"] for m in state.team) / len(state.team)

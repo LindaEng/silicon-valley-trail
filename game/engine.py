@@ -1,4 +1,4 @@
-from game.actions import check_team, explore_city, update_to_next_location
+from game.actions import check_team, explore_city, update_to_next_location, attempt_IPO
 
 class GameEngine:
     def __init__(self, state):
@@ -36,7 +36,12 @@ class GameEngine:
         elif choice == "4":
             return "exit"
         elif choice == "5" and len(self.state.locations_visited) > 5:
-            print("STUB IN FOR IPO")
+            result = attempt_IPO(self.state)
+            if result == True:
+                print("YOU WON! Thank you for playing")
+                return "exit"
+            else:
+                return "menu"
         else:
             print("invalid choice")   
             return "menu"
