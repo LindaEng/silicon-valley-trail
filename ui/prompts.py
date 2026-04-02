@@ -4,6 +4,5 @@ def show_menu():
     choice = input("Choose an option: ")
     return choice
 
-def choose_team():
-    team = []
+
     

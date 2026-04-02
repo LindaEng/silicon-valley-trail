@@ -20,10 +20,12 @@ def random_blessing(state):
         state.morale += rand
         print(f"Morale blessing: The team’s spirits lifted by {rand}% after a surprise celebration!")
     else:
+        rand = random.randint(10, 35)
+        state.popularity += rand
+        print(f"Popularity increased by {rand} thanks to a viral post about our product!")
+
+
     
 
 
 
-
-
-print(f"Productivity blessing: Output increased by {random.randint(10, 35)}% thanks to a breakthrough idea!")
