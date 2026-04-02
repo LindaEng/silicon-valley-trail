@@ -1,82 +1,82 @@
 [
   {
     "name": "Hacker",
+    "productivity": 9,
     "skill": 9,
-    "caffeine": 8,
     "cost": 5,
     "moraleImpact": -1,
-    "health": 100
+    "motivation": 100
   },
   {
     "name": "VC Whisperer",
+    "productivity": 4,
     "skill": 3,
-    "caffeine": 3,
     "cost": 8,
-    "moraleImpact": 1,
-    "health": 100
+    "moraleImpact": 4,
+    "motivation": 100
   },
   {
     "name": "Zen Dev",
+    "productivity": 7,
     "skill": 6,
-    "caffeine": 2,
     "cost": 4,
     "moraleImpact": 3,
-    "health": 100
+    "motivation": 100
   },
   {
     "name": "l337 master",
+    "productivity": 8,
     "skill": 8,
-    "caffeine": 6,
     "cost": 5,
-    "moraleImpact": -3,
-    "health": 100
+    "moraleImpact": 1,
+    "motivation": 100
   },
   {
     "name": "Bug Magnet",
+    "productivity": 2,
     "skill": 2,
-    "caffeine": 4,
     "cost": 2,
-    "moraleImpact": -1,
-    "health": 100
+    "moraleImpact": 4,
+    "motivation": 100
   },
   {
     "name": "Cracked Engineer",
+    "productivity": 10,
     "skill": 10,
-    "caffeine": 9,
     "cost": 9,
-    "moraleImpact": -2,
-    "health": 100
+    "moraleImpact": 2,
+    "motivation": 100
   },
   {
     "name": "Coffee Addict",
+    "productivity": 4,
     "skill": 3,
-    "caffeine": 10,
     "cost": 2,
     "moraleImpact": -1,
-    "health": 100
+    "motivation": 100
   },
   {
     "name": "Intern",
+    "productivity": 2,
     "skill": 2,
-    "caffeine": 3,
     "cost": 1,
     "moraleImpact": 0,
-    "health": 100
+    "motivation": 100
   },
   {
     "name": "Product Manager",
+    "productivity": 5,
     "skill": 5,
-    "caffeine": 2,
     "cost": 4,
     "moraleImpact": 2,
-    "health": 100
+    "motivation": 100
   },
   {
     "name": "Vibe Coder",
+    "productivity": 3,
     "skill": 1,
-    "caffeine": 5,
     "cost": 7,
     "moraleImpact": 0,
-    "health": 100
+    "motivation": 100
   }
 ]

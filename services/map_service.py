@@ -30,7 +30,6 @@ def get_location(query):
         "lon": result["lon"]
     }
 
-
 def get_nearby(desc, lat, lon):
     pattern = "|".join(desc)
     query = f"""
@@ -65,7 +64,7 @@ def get_nearby(desc, lat, lon):
         locations.append(el)
         if len(locations) >= 5:
             break
+    
+    return locations
 
-    for loc in locations:
-        if loc["tags"]["name"]:
-            print(f"place: {loc["tags"]["name"]} \n")
+

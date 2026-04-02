@@ -24,7 +24,7 @@ class GameEngine:
 
     def handle_choice(self, choice):
         if choice == "1":
-            explore_city(self.state.location)
+            explore_city(self.state.location, self.state)
         elif choice == "2":
             check_team(self.state)
             return "menu"

@@ -1,4 +1,5 @@
 from utils.loader import load_json
+from utils.random import calc_productivity_increase, calc_morale_increase, calc_funding_increase, calc_restaurant_cost
 from pathlib import Path
 from game.state import GameState
 from services.map_service import get_location, get_nearby
@@ -66,41 +67,64 @@ def choose_team(characters):
             print("Invalid input. Try again.\n")
 
 def check_team(state):
-    print("\n Your team: ")
-    for i, member in enumerate(state.team):
-        print("=================")
-        print(f"{i}: \n")
-        print(f"Name: {member['name']}: \n"
-              f"Health: {member['health']} \n"
-              f"Caffeine {member['caffeine']} \n"
-              f"Cost: {member['cost']} \n"
-              f"Morale Impact: {member['moraleImpact']} \n"
-              )
-    back = input("Go back to menu? y/n: ")
-    if back == "y":
-        return "menu"
-    else:
-        check_team(state)
+    while True:
+        print("\n Your team: ")
+        for i, member in enumerate(state.team):
+            print("=================")
+            print(f"{i}: \n")
+            print(f"Name: {member['name']}: \n"
+                  f"Motivation: {member['motivation']} \n"
+                  f"Productivity: {member['productivity']} \n"
+                  f"Cost: {member['cost']} \n"
+                  f"Morale Impact: {member['moraleImpact']} \n"
+                  )
+        
+        back = input("Go back to menu? y/n: ")
+        if back == "y":
+            return "menu"
        
 
-def explore_city(location):
+def explore_city(location, state):
     print("=================")
     print("\n What would you like to do? \n")
-    print("1. Find Coffee Shops \n")
-    print("2. Venues to speak at \n")
-    print("3. Team Boost \n")
+    print("1. Find cafes/restaurants \n")
+    print("2. Find events to raise money\n")
+    print("3. Team Booster \n")
     print("4. Back to Menu")
 
     choice = input("Your choice: Input number ")
 
     if choice == "1":
-        get_nearby(["cafe", "restaurant"],location["lat"], location["lon"])
+        res = get_nearby(["cafe", "restaurant"],location["lat"], location["lon"])
+        choose_cafe_restaurants(res, state)
     elif choice == "2":
-        get_nearby(["coworking_space"],location["lat"], location["lon"])
+        get_nearby(["coworking_space", "events"],location["lat"], location["lon"])
     elif choice == "3":
         get_nearby(["bar"],location["lat"], location["lon"])
     elif choice == "4":
         return "menu"
     else:
         print("Invalid choice")
+
+# 0,1,2,3,4
+def choose_cafe_restaurants(restaurants, state):
+    for i, res in enumerate(restaurants):
+        name = res["tags"].get("name", "NAME UNKNOWN")
+        cuisine = res["tags"].get("cuisine", "yummy :p")
+        print(f"{i}. Name: {name} - Cuisine: {cuisine} \n")
+    
+    choice = input("Choose a place to eat: Enter number or 0 to go back")
+
+    try:
+        if choice == "0":
+            return "main"
+        print("BEFORE ", state.funding, " ", state.productivity)
+        # Decrease from funding cost
+        state.funding -= calc_restaurant_cost(state)
+        # Boost productivity 
+        state.productivity += calc_productivity_increase(state)
+        print("AFTER ", state.funding, " ", state.productivity)
+    except (ValueError):
+        print(ValueError)
+
 
