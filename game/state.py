@@ -1,8 +1,8 @@
 class GameState:
-    def __init__(self, funding=1000, morale=100, productivity = 100, team=None, location=None, day=1):
+    def __init__(self, funding=1000, morale=100, popularity = 100, team=None, location=None, day=1):
         self.funding = funding
         self.morale = morale 
-        self.productivity = productivity
+        self.popularity = popularity
         self.location = location or {"name": "unknown"}
         self.team = team or []
         self.day = day
@@ -11,7 +11,7 @@ class GameState:
         return {
             "funding": self.funding,
             "morale": self.morale,
-            "productivity": self.productivity,
+            "popularity": self.popularity,
             "team": self.team,
             "location": self.location,
             "day": self.day

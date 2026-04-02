@@ -1,12 +1,11 @@
-from game.actions import check_team, explore_city
+from game.actions import check_team, explore_city, update_to_next_location
 
 class GameEngine:
     def __init__(self, state):
         self.state = state
 
     def step(self):
-        print(f"\nDay: {self.state.day}")
-        print(f"\nLocation: {self.state.location}")
+        self.print_summary()
         print("\nWhat would you like to do?")
         print("1. Explore area")
         print("2. Check in with team")
@@ -29,11 +28,18 @@ class GameEngine:
             check_team(self.state)
             return "menu"
         elif choice == "3":
-            print("STUB IN FOR NEXT DESTINATION")
+            update_to_next_location(self.state)
         elif choice == "4":
             return "exit"
         
-    
+    def print_summary(self):
+        print(f"Day: {self.state.day}\n")
+        print(f"Current Location: {self.state.location["name"]}\n")
+        print(f"Funding: {self.state.funding:.2f}\n")
+        print(f"Morale: {self.state.morale}\n")
+        print(f"Popularity: {self.state.popularity}\n")
+        
+
     def back_to_menu():
         return "menu"
 

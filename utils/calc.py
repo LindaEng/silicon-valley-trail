@@ -1,7 +1,8 @@
 import random
+import math
 
-def calc_productivity_increase(state):
-    avg = sum(m["productivity"] for m in state.team) / len(state.team)
+def calc_popularity_increase(state):
+    avg = sum(m["moraeImpact"] for m in state.team) / len(state.team)
     return round((avg * random.uniform(0.1, 1)),2)
 
 def calc_morale_increase(state):
@@ -17,10 +18,13 @@ def calc_funding_increase(state):
 def calc_restaurant_cost(state):
     return round((random.uniform(6, 25) * len(state.team)),2)
 
-def calc_morale_boost_cost(state):
+def calc_fun_cost(state):
+    return round((random.uniform(10, 50) * len(state.team)),2)
+
+def calc_morale_decrease(state):
     return round((random.uniform(10,25) * len(state.team)) + ((sum(m["productivity"] for m in state.team)) * random.uniform(1,2)),2)
 
-def calc_productivity_decay(state):
+def calc_popularity_decay(state):
     avg_morale = sum(m["moraleImpact"] for m in state.team) / len(state.team)
     morale_factor = avg_morale / 10
     base_decay = random.uniform(0.05, 0.15)
@@ -36,6 +40,13 @@ def calc_fundraising_cost(state):
         0
     ),2)
 
+def calc_distance(loc1, loc2):
+    lat1 = float(loc1["lat"])
+    lon1 = float(loc1["lon"])
+    lat2 = float(loc2["lat"])
+    lon2 = float(loc2["lon"])
 
+    lat_diff = lat1 - lat2
+    lon_diff = lon1 - lon2
 
-
+    return (lat_diff**2 + lon_diff**2) ** 0.5
