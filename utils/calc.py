@@ -2,7 +2,7 @@ import random
 import math
 
 def calc_popularity_increase(state):
-    avg = sum(m["moraeImpact"] for m in state.team) / len(state.team)
+    avg = sum(m["moraleImpact"] for m in state.team) / len(state.team)
     return round((avg * random.uniform(0.1, 1)),2)
 
 def calc_morale_increase(state):
@@ -22,7 +22,7 @@ def calc_fun_cost(state):
     return round((random.uniform(10, 50) * len(state.team)),2)
 
 def calc_morale_decrease(state):
-    return round((random.uniform(10,25) * len(state.team)) + ((sum(m["productivity"] for m in state.team)) * random.uniform(1,2)),2)
+    return round(random.uniform(1,5) * len(state.team))
 
 def calc_popularity_decay(state):
     avg_morale = sum(m["moraleImpact"] for m in state.team) / len(state.team)

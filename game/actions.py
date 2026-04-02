@@ -1,9 +1,10 @@
 from utils.loader import load_json
 from utils.calc import calc_popularity_increase, calc_morale_increase, calc_funding_increase, calc_restaurant_cost, calc_morale_decrease,  calc_popularity_decay, calc_distance, calc_fun_cost
-from utils.display import print_character
+from ui.display import print_character
 from pathlib import Path
 from game.state import GameState
 from services.map_service import get_location, get_nearby
+from utils.cache import CATEGORIES
 import time
 import random
 
@@ -84,16 +85,8 @@ def choose_team(characters):
 def check_team(state):
     while True:
         print("\n Your team: ")
-        for i, member in enumerate(state.team):
-            print("=================")
-            print(f"{i}: \n")
-            print(f"Name: {member['name']}: \n"
-                  f"Motivation: {member['motivation']} \n"
-                  f"popularity: {member['popularity']} \n"
-                  f"Cost: {member['cost']} \n"
-                  f"Morale Impact: {member['moraleImpact']} \n"
-                  )
-        
+        for member in state.team:
+            print_character(member)
         back = input("Go back to menu? y/n: ")
         if back == "y":
             return "menu"
@@ -108,17 +101,18 @@ def explore_city(location, state):
     print("4. Back to Menu")
 
     choice = input("Your choice: Input number ")
-
+    lat = location["lat"]
+    lon = location["lon"]
     if choice == "1":
-        res = get_nearby(["cafe", "restaurant"],location["lat"], location["lon"])
+        res = get_nearby(CATEGORIES["restaurants"],lat, lon)
         if len(res): 
             choose_cafe_restaurants(res, state)
     elif choice == "2":
-        res = get_nearby(["coworking_space", "events"],location["lat"], location["lon"])
+        res = get_nearby(CATEGORIES["events"],lat, lon)
         if len(res):
             choose_fundraising(res, state)
     elif choice == "3":
-        res = get_nearby(["bar", "gym"],location["lat"], location["lon"])
+        res = get_nearby(CATEGORIES["fun"],lat, lon)
         if len(res):
             choose_morale_boost(res, state)
     elif choice == "4":
@@ -182,7 +176,7 @@ def choose_fundraising(venues, state):
 def choose_morale_boost(places, state):
     for i, res in enumerate(places):
         name = res["tags"].get("name", "NAME UNKNOWN")
-        print(f"{i}. Name: {name} \n")
+        print(f"{i + 1}. Name: {name} \n")
     
     choice = input("Choose a place to have fun: Enter number or 0 to go back")
 
@@ -194,13 +188,13 @@ def choose_morale_boost(places, state):
         print("... did everyone bring their ID? ")
         time.sleep(3)
         morale_boost = calc_morale_increase(state)
+        print(f"Your team feels better bonded! hip hip hooray! Moral has increased +{morale_boost} going from {state.morale} to totaling: {state.morale + morale_boost}")
         state.morale += morale_boost
-        print(f"Your team feels better bonded! hip hip hooray! Moral has increased +{morale_boost} totaling: {state.morale}")
         time.sleep(2)
-        print("Having fun also means spending $ and burning time away from working towards an IPO... ")
         money_spent = calc_fun_cost(state)
-        state.popularity -= money_spent
-        print("AFTER ", state.funding, " ", state.popularity)
+
+        print(f"Having fun also means spending $ and burning time away from working towards an IPO... You spent: {money_spent}. Before: {state.funding} -> After: {state.funding - money_spent}")
+        state.funding -= money_spent
     except (ValueError):
         print(ValueError)    
 
@@ -235,14 +229,6 @@ def update_to_next_location(state):
         if member["motivation"] <= 0:
             leavers.append(member)
 
-    avg_morale = (sum(m["motivation"] for m in state.team) / len(state.team)) / 100 
-    # --- MORALE ----
-
-    state.morale -= random.uniform(1,10) - (state.morale * avg_morale)
-
-    # --- POPULARITY ---
-    state.popularity -= random.uniform(5,10)
-
     # --- REMOVE MEMBERS WITH 0 MORALE ---
 
     # print who left
@@ -252,6 +238,13 @@ def update_to_next_location(state):
     # update team
     state.team = [m for m in state.team if m["motivation"] > 0]
     
+    # --- MORALE ----
+
+    state.morale -= random.uniform(1,10) 
+
+    # --- POPULARITY ---
+    state.popularity -= random.uniform(5,10)
+
     # --- UPDATE LOCATION AND DAY ---
     state.location = found_location
     state.day += 1

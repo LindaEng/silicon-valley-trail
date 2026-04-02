@@ -10,20 +10,14 @@ def get_location(query):
         "format": "json",
         "limit": 1
     }
-
     headers = {
         "User-Agent": "silicon-trail-app"
     }
-
     response = requests.get(NOMINATIM_URL, params=params, headers=headers)
-
     data = response.json()
-
     if not data:
         return None
-
     result = data[0]
-
     return {
         "name": result["display_name"],
         "lat": result["lat"],
@@ -59,7 +53,7 @@ def get_nearby(desc, lat, lon):
         return []
     
     locations = []
-
+    
     for el in data.get("elements", []):
         locations.append(el)
         if len(locations) >= 5:
