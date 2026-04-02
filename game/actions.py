@@ -1,8 +1,9 @@
 from utils.loader import load_json
-from utils.random import calc_productivity_increase, calc_morale_increase, calc_funding_increase, calc_restaurant_cost
+from utils.random import calc_productivity_increase, calc_morale_increase, calc_funding_increase, calc_restaurant_cost, calc_morale_boost_cost,  calc_productivity_decay
 from pathlib import Path
 from game.state import GameState
 from services.map_service import get_location, get_nearby
+import time
 
 
 def load_splash():
@@ -96,11 +97,16 @@ def explore_city(location, state):
 
     if choice == "1":
         res = get_nearby(["cafe", "restaurant"],location["lat"], location["lon"])
-        choose_cafe_restaurants(res, state)
+        if len(res): 
+            choose_cafe_restaurants(res, state)
     elif choice == "2":
-        get_nearby(["coworking_space", "events"],location["lat"], location["lon"])
+        res = get_nearby(["coworking_space", "events"],location["lat"], location["lon"])
+        if len(res):
+            choose_fundraising(res, state)
     elif choice == "3":
-        get_nearby(["bar"],location["lat"], location["lon"])
+        res = get_nearby(["bar", "gym"],location["lat"], location["lon"])
+        if len(res):
+            choose_morale_boost(res, state)
     elif choice == "4":
         return "menu"
     else:
@@ -118,13 +124,65 @@ def choose_cafe_restaurants(restaurants, state):
     try:
         if choice == "0":
             return "main"
-        print("BEFORE ", state.funding, " ", state.productivity)
-        # Decrease from funding cost
-        state.funding -= calc_restaurant_cost(state)
-        # Boost productivity 
+        print("Your team decides to get a bite to eat and recharge ")
+        time.sleep(2)
+        cost = calc_restaurant_cost(state)
+        state.funding -= cost
+        print(f"That meal cost your team: ${cost}. Your total funding is now ${state.funding}")
+        time.sleep(1)
         state.productivity += calc_productivity_increase(state)
+        print(f"Your team feels recharged! Productivity is now: {state.productivity}")
+    except (ValueError):
+        print(ValueError)
+
+def choose_fundraising(venues, state):
+    for i, res in enumerate(venues):
+        name = res["tags"].get("name", "NAME UNKNOWN")
+        print(f"{i}. Name: {name} \n")
+    
+    choice = input("Choose a place to fundraise: Enter number or 0 to go back")
+
+    try:
+        if choice == "0":
+            return "main"
+        print("Your team tries to raise money.... ")
+        time.sleep(2)
+        print("...")
+        time.sleep(3)
+        money_raised = calc_funding_increase(state)
+        state.funding += money_raised
+        print(f"Your team has raised {money_raised}, now totaling: ${state.funding}. ")
+        time.sleep(2)
+        print("All that talking has exhausted your team... ")
+        state.productivity += calc_productivity_decay(state)
         print("AFTER ", state.funding, " ", state.productivity)
     except (ValueError):
         print(ValueError)
+
+
+def choose_morale_boost(places, state):
+    for i, res in enumerate(places):
+        name = res["tags"].get("name", "NAME UNKNOWN")
+        print(f"{i}. Name: {name} \n")
+    
+    choice = input("Choose a place to have fun: Enter number or 0 to go back")
+
+    try:
+        if choice == "0":
+            return "main"
+        print("Your team jumps for joy as they go do something fun.... ")
+        time.sleep(2)
+        print("... did everyone bring their ID? ")
+        time.sleep(3)
+        morale_boost = calc_morale_increase(state)
+        state.morale += morale_boost
+        print(f"Your team feels better bonded! hip hip hooray! Moral has increased +{morale_boost} totaling: {state.morale}")
+        time.sleep(2)
+        print("Having fun also means spending $ and burning time away from working towards an IPO... ")
+        money_spent = calc_morale_boost_cost(state)
+        state.productivity -= money_spent
+        print("AFTER ", state.funding, " ", state.productivity)
+    except (ValueError):
+        print(ValueError)    
 
 
