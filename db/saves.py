@@ -13,23 +13,6 @@ def save_game(conn, state, name="run"):
 
     return cursor.lastrowid
 
-# def load_game(conn, save_id):
-#     try:
-#         row = conn.execute(
-#             "SELECT state FROM saves WHERE id = ?",
-#             (save_id,)
-#         ).fetchone()
-        
-#         if row is None:
-#             print(f"No save found with id {save_id}")
-#             return None
-        
-#         data = json.loads(row[0])
-#         return GameState.from_dict(data)
-#     except Exception as e:
-#         print(f"Error loading save {save_id}: {e}")
-#         return None
-
 
 def load_game(conn, save_id):
     try:
