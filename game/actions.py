@@ -217,7 +217,7 @@ def choose_fundraising(venues, state):
         state.popularity += increased_pop
         print(f"All that talking has caused quite the buzz... popularity increased by {increased_pop:.2f}. ")
         time.sleep(2)
-        decr_morale = calc_morale_decrease(state)
+        decr_morale = calc_morale_decrease()
         state.morale -= decr_morale
         print(f"All that talking is pretty tiring... Morale decreased by {decr_morale:.2f}")
     except (ValueError, IndexError):

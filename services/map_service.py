@@ -71,12 +71,13 @@ def get_nearby(category_pairs, lat, lon):
                         print(f"Found {len(data['elements'])} spots!")
                     else:
                         print("No spots found nearby.")
+                        return generate_fallback_places()
                     return data
                 elif isinstance(data, list):
                     if data:
                         print(f"Found {len(data)} spots!")
                     else:
-                        print("No spots found nearby.")
+                        print("Here is what a local recommends: ")
                     return {"elements": data}
                 else:
                     print("Checking local recommendations...")

@@ -7,7 +7,9 @@ class GameEngine:
     def step(self):
         if self.check_game_over() == True:
             return "exit"
+        print("=========== SUMMARY ===========")
         self.print_summary()
+        print("=========== MENU ===========")
         print("\nWhat would you like to do?")
         print("1. Explore area")
         print("2. Check in with team")
@@ -16,8 +18,8 @@ class GameEngine:
         # Only show if we went to more than 5 locations
         if len(self.state.locations_visited) > 5:
             print("5. Attempt IPO")
+        print("==========================")
         choice = input("Choose: ")
-
         result = self.handle_choice(choice)
         if result == "menu":
             return
@@ -52,7 +54,7 @@ class GameEngine:
         print(f"Funding: {self.state.funding:.2f}\n")
         print(f"Morale: {self.state.morale}\n")
         print(f"Popularity: {self.state.popularity}\n")
-        print("========================================")
+        print("==============CITIES YOU HAVE VISTED:==================")
         print("Cities that you have visited so far: ")
         for i, loc in enumerate(self.state.locations_visited):
             print(f"{i}: {loc}")

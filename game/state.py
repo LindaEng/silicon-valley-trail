@@ -15,7 +15,8 @@ class GameState:
             "popularity": self.popularity,
             "team": self.team,
             "location": self.location,
-            "day": self.day
+            "day": self.day,
+            "locations_visited": self.locations_visited
         }
     
     @staticmethod
