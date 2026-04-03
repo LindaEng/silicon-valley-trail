@@ -7,7 +7,7 @@ def test_save_and_load():
     init_db(conn)
 
     # create state
-    state = GameState(cash=500, morale=80, team=["A"], location="NYC")
+    state = GameState(funding=500, morale=80, popularity="99", team=["A"], location="NYC", day=1, locations_visited=["NYC"])
 
     # test save
     save_id = save_game(conn, state)
