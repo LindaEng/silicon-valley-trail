@@ -26,7 +26,7 @@ from ui.display import styled_input, print_characters_grid, print_travel_summary
 
 # Service imports
 from services.map_service import get_location, get_nearby
-from services.ai_service import get_fun_fact, create_intro
+from services.ai_service import get_fun_fact, create_intro, create_character_lore, get_action_fact
 
 
 def load_splash():
@@ -126,12 +126,15 @@ def check_team(state):
     while True:
         print("\n Your team: ")
         print_characters_grid(state.team)
+        for mem in state.team:
+            print(create_character_lore(mem, state.team))
         back = input("Go back to menu? y/n: ")
         if back == "y":
             return "menu"
        
 
 def explore_city(location, state):
+    print(f"{location["name"]}: ", get_fun_fact(location))
     print("=================\n\nWhat would you like to do?\n")
     menu_items = {
         "1": ("Find cafes/restaurants", "restaurants", choose_cafe_restaurants),
@@ -151,7 +154,8 @@ def explore_city(location, state):
     if choice not in menu_items:
         print("Invalid choice")
         return
-    
+    print("Looking up some spots! ")
+    time.sleep(2)
     _, category, handler = menu_items[choice]
     lat, lon = location["lat"], location["lon"]
     results = get_nearby(CATEGORIES[category], lat, lon)
@@ -172,6 +176,10 @@ def choose_cafe_restaurants(restaurants, state):
         print("No restaurants found nearby.")
         return
     
+    #LLM fun fact
+    print("-----------------------------------------------")
+    print(get_action_fact(state.location["name"], "restaurants"))
+    print("-----------------------------------------------")
     # Display options
     for i, place in enumerate(places[:5]):
         tags = place.get("tags", {}) if isinstance(place, dict) else {}
@@ -209,6 +217,10 @@ def choose_fundraising(venues, state):
         print("No venues found nearby.")
         return
     
+    #LLM fun fact
+    print("-----------------------------------------------")
+    print(get_action_fact(state.location, "venues for fundraising"))
+    print("-----------------------------------------------")
     # Display venues
     for i, place in enumerate(places[:5]):
         name = place.get("tags", {}).get("name", "Unknown venue") if isinstance(place, dict) else "Unknown venue"
@@ -247,7 +259,10 @@ def choose_morale_boost(places, state):
     if not venues:
         print("No places found nearby.")
         return
-    
+    #LLM fun fact
+    print("-----------------------------------------------")
+    print(get_action_fact(state.location, "local night life"))    
+    print("-----------------------------------------------")
     # Display venues
     for i, venue in enumerate(venues[:5]):
         name = venue.get("tags", {}).get("name", "Unknown place") if isinstance(venue, dict) else "Unknown place"

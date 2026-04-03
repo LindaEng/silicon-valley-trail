@@ -54,9 +54,6 @@ class GameEngine:
             print("invalid choice")   
             return "menu"
         
-
-        for i, loc in enumerate(self.state.locations_visited):
-            print(f"{i}: {loc}")
         
     def check_game_over(self):
         if self.state.funding <= 0:
