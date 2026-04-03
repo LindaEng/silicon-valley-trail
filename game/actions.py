@@ -33,7 +33,6 @@ def start_new_game():
     location = input("Enter location ")
     location_data = get_location(location)
     if location_data:
-
         print("You chose: ", location)
     else:
         print("Location not found, using raw input")
