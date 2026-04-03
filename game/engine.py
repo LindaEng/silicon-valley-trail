@@ -1,5 +1,5 @@
 from game.actions import check_team, explore_city, update_to_next_location, attempt_IPO
-
+from ui.display import styled_input
 class GameEngine:
     def __init__(self, state):
         self.state = state
@@ -19,7 +19,7 @@ class GameEngine:
         if len(self.state.locations_visited) > 5:
             print("5. Attempt IPO")
         print("==========================")
-        choice = input("Choose: ")
+        choice = styled_input("Choose: ")
         result = self.handle_choice(choice)
         if result == "menu":
             return

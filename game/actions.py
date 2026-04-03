@@ -22,7 +22,7 @@ from utils.calc import (
 from utils.cache import CATEGORIES
 
 # UI imports
-from ui.display import print_character
+from ui.display import print_character, styled_input
 
 # Service imports
 from services.map_service import get_location, get_nearby
@@ -37,7 +37,7 @@ def load_splash():
           "1. New Game\n" \
           "2. Continue\n")
     
-    choice = input("Choose an Option: ")
+    choice = styled_input("Choose an Option: ")
     return choice
 
 
@@ -105,7 +105,7 @@ def choose_team(characters):
                 print_character(member)
             
             # Get player approval
-            choice = input(f"Accept this team? (y/n) - {retries_left - 1} retr{'y' if retries_left - 1 == 1 else 'ies'} left: ").lower()
+            choice = styled_input(f"Accept this team? (y/n) - {retries_left - 1} retr{'y' if retries_left - 1 == 1 else 'ies'} left: ").lower()
             
             if choice == 'y':
                 return team
@@ -148,7 +148,7 @@ def explore_city(location, state):
     for key, (desc, _, _) in menu_items.items():
         print(f"{key}. {desc}")
     
-    choice = input("\nYour choice (1-4): ").strip()
+    choice = styled_input("\nYour choice (1-4): ").strip()
     
     if choice == "4":
         return "menu"
@@ -185,7 +185,7 @@ def choose_cafe_restaurants(restaurants, state):
         print(f"{i+1}. {name} - {cuisine}")
     
     # Get selection
-    choice = input("Choose a place to eat (number) or 0 to go back: ").strip()
+    choice = styled_input("Choose a place to eat (number) or 0 to go back: ").strip()
     if choice == "0":
         return "main"
     
@@ -219,7 +219,7 @@ def choose_fundraising(venues, state):
         name = place.get("tags", {}).get("name", "Unknown venue") if isinstance(place, dict) else "Unknown venue"
         print(f"{i+1}. {name}")
     
-    choice = input("Choose a venue (number) or 0 to go back: ").strip()
+    choice = styled_input("Choose a venue (number) or 0 to go back: ").strip()
     if choice == "0":
         return "main"
     
@@ -258,7 +258,7 @@ def choose_morale_boost(places, state):
         name = venue.get("tags", {}).get("name", "Unknown place") if isinstance(venue, dict) else "Unknown place"
         print(f"{i+1}. {name}")
     
-    choice = input("Choose a place for fun (number) or 0 to go back: ").strip()
+    choice = styled_input("Choose a place for fun (number) or 0 to go back: ").strip()
     if choice == "0":
         return "main"
     
