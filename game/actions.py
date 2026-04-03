@@ -26,6 +26,7 @@ from ui.display import styled_input, print_characters_grid, print_travel_summary
 
 # Service imports
 from services.map_service import get_location, get_nearby
+from services.ai_service import get_fun_fact, create_intro
 
 
 def load_splash():
@@ -58,9 +59,10 @@ def start_new_game():
         print("Location not found, using raw input")
     
     print("------------------------------")
+    print(f"Location: {location}", create_intro(location))
     
     # Get team selection
-    print("Let's choose your dream team!")
+    print("Before we start lets choose a dream team!")
     team = choose_team(load_characters())
     
     # Create game state
@@ -284,7 +286,8 @@ def update_to_next_location(state):
     if not found_location:
         print("Location not found.")
         return
-    
+    #llm fun fact
+    print(f"\n{get_fun_fact(found_location['name'])}\n")
     print(f"\nTraveling from {state.location['name']} to {found_location['name']}...")
     state.locations_visited.append(new_location)
     time.sleep(2)

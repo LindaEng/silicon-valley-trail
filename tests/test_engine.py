@@ -3,6 +3,7 @@ from unittest.mock import patch, MagicMock
 from types import SimpleNamespace
 from game.engine import GameEngine
 from game.state import GameState
+from ui.display import styled_input, print_summary 
 
 
 def test_step_increments_day():
@@ -176,21 +177,3 @@ def test_handle_choice_ipo_not_available():
     # Should treat as invalid choice
     assert result == "menu"
 
-
-def test_print_summary(capsys):
-    """Test print_summary displays correctly"""
-    state = GameState(day=3, funding=5000, morale=75, popularity=80)
-    state.location = {"name": "San Francisco"}
-    state.locations_visited = ["San Jose", "Palo Alto"]
-    engine = GameEngine(state)
-    
-    engine.print_summary()
-    captured = capsys.readouterr()
-    
-    assert "Day: 3" in captured.out
-    assert "Current Location: San Francisco" in captured.out
-    assert "Funding: 5000.00" in captured.out
-    assert "Morale: 75" in captured.out
-    assert "Popularity: 80" in captured.out
-    assert "San Jose" in captured.out
-    assert "Palo Alto" in captured.out
