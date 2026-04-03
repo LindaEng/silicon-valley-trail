@@ -1,31 +1,37 @@
 from game.actions import check_team, explore_city, update_to_next_location, attempt_IPO
-from ui.display import styled_input
+from ui.display import styled_input, print_summary
+
 class GameEngine:
     def __init__(self, state):
         self.state = state
+        self.running = True
 
     def step(self):
-        if self.check_game_over() == True:
+        if self.check_game_over():
+            self.running = False
             return "exit"
+        
         print("=========== SUMMARY ===========")
-        self.print_summary()
+        print_summary(self.state)
         print("=========== MENU ===========")
         print("\nWhat would you like to do?")
         print("1. Explore area")
         print("2. Check in with team")
         print("3. Next destination")
         print("4. Save and Quit")
-        # Only show if we went to more than 5 locations
+        
         if len(self.state.locations_visited) > 5:
             print("5. Attempt IPO")
+        
         print("==========================")
         choice = styled_input("Choose: ")
         result = self.handle_choice(choice)
-        if result == "menu":
-            return
-        if result == "exit":
-            return "exit"
-        # self.state.day += 1       
+        
+    
+        if result != "exit":
+            self.state.day += 1  
+        
+        return result
 
     def handle_choice(self, choice):
         if choice == "1":
@@ -39,7 +45,7 @@ class GameEngine:
             return "exit"
         elif choice == "5" and len(self.state.locations_visited) > 5:
             result = attempt_IPO(self.state)
-            if result == True:
+            if result:
                 print("YOU WON! Thank you for playing")
                 return "exit"
             else:
@@ -48,18 +54,10 @@ class GameEngine:
             print("invalid choice")   
             return "menu"
         
-    def print_summary(self):
-        print(f"Day: {self.state.day}\n")
-        print(f"Current Location: {self.state.location["name"]}\n")
-        print(f"Funding: {self.state.funding:.2f}\n")
-        print(f"Morale: {self.state.morale}\n")
-        print(f"Popularity: {self.state.popularity}\n")
-        print("==============CITIES YOU HAVE VISTED:==================")
-        print("Cities that you have visited so far: ")
+
         for i, loc in enumerate(self.state.locations_visited):
             print(f"{i}: {loc}")
         
-
     def check_game_over(self):
         if self.state.funding <= 0:
             print("You ran out of money... Game over")
@@ -69,17 +67,11 @@ class GameEngine:
             return True
         return False
 
-    def back_to_menu():
-        return "menu"
-
     def run(self):
         print("-------- GAME START ------- \n")
-        while True:
+        while self.running:
             result = self.step()
             if result == "exit":
                 print("Exiting game...")
-                return "exit"
-
-
-
-            
+                break
+        return "exit"

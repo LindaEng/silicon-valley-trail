@@ -25,27 +25,35 @@ def load_game(conn, save_id):
             print(f"No save found with id {save_id}")
             return None
         
-        print(f"DEBUG: row[0] type = {type(row[0])}")
-        print(f"DEBUG: row[0] first 200 chars = {row[0][:200]}")
-        
         data = json.loads(row[0])
-        print(f"DEBUG: data keys = {data.keys()}")
-        print(f"DEBUG: data has 'locations_visited'? {'locations_visited' in data}")
-        
         state = GameState.from_dict(data)
-        print(f"DEBUG: state created successfully, funding={state.funding}")
         
         return state
     except Exception as e:
         print(f"Error loading save {save_id}: {e}")
-        import traceback
-        traceback.print_exc()
         return None
 
 
 def list_saves(conn):
     rows = conn.execute(
-        "SELECT id, name, state, created_at FROM saves"
+        "SELECT id, state FROM saves ORDER BY id"
     ).fetchall()
-
-    return rows
+    
+    # Convert state from JSON string to dict for each row
+    result = []
+    for row in rows:
+        save_id = row[0]
+        state_data = row[1]
+        
+        # Parse the JSON string to dict
+        if isinstance(state_data, str):
+            try:
+                state_dict = json.loads(state_data)
+                result.append((save_id, state_dict))
+            except:
+                print(f"Warning: Could not parse save {save_id}")
+                result.append((save_id, None))
+        else:
+            result.append((save_id, state_data))
+    
+    return result

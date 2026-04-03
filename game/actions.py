@@ -22,7 +22,7 @@ from utils.calc import (
 from utils.cache import CATEGORIES
 
 # UI imports
-from ui.display import print_character, styled_input
+from ui.display import styled_input, print_characters_grid, print_travel_summary
 
 # Service imports
 from services.map_service import get_location, get_nearby
@@ -62,7 +62,6 @@ def start_new_game():
     # Get team selection
     print("Let's choose your dream team!")
     team = choose_team(load_characters())
-    print(team)
     
     # Create game state
     new_game_state = GameState(
@@ -71,8 +70,6 @@ def start_new_game():
     )
     new_game_state.locations_visited.append(location)
     
-    # Final confirmation
-    print(f"THIS IS YOUR FINAL TEAM {new_game_state.to_dict()}")
     
     return new_game_state
 
@@ -88,8 +85,7 @@ def choose_team(characters):
     while retries_left > 0:
         # Show available characters
         print("Choose your team (at least 5, comma separated indices):")
-        for character in characters:
-            print_character(character)
+        print_characters_grid(characters)
         
         # Wait for player to be ready
         input(f"We will randomly select {TEAM_SIZE} players. You have {retries_left} retr{'y' if retries_left == 1 else 'ies'}. Press any key to continue")
@@ -101,8 +97,7 @@ def choose_team(characters):
             team = random.sample(characters, TEAM_SIZE)
             
             print("Here is the team!")
-            for member in team:
-                print_character(member)
+            print_characters_grid(team)
             
             # Get player approval
             choice = styled_input(f"Accept this team? (y/n) - {retries_left - 1} retr{'y' if retries_left - 1 == 1 else 'ies'} left: ").lower()
@@ -122,15 +117,13 @@ def choose_team(characters):
     # No retries remaining
     print("No more retries - assigning final team")
     time.sleep(2)
-    for member in team:
-        print_character(member)
+    print_characters_grid(team)
     return team
 
 def check_team(state):
     while True:
         print("\n Your team: ")
-        for member in state.team:
-            print_character(member)
+        print_characters_grid(state.team)
         back = input("Go back to menu? y/n: ")
         if back == "y":
             return "menu"
@@ -334,9 +327,7 @@ def update_to_next_location(state):
     state.day += 1
     time.sleep(2)
     
-    print(f"Welcome to: {found_location['name']}")
-    print(f"Travel cost: ${travel_cost:.2f} | Team: {len(state.team)} members")
-    print(f"Funding: ${state.funding:.2f} | Morale: {state.morale:.2f} | Popularity: {state.popularity:.2f} | Day: {state.day}")
+    print_travel_summary(state, travel_cost, found_location)
 
 def attempt_IPO(state):
     funding_score = min(state.funding / 1_000_000, 1)

@@ -15,7 +15,6 @@ def main():
     state = None
 
     if choice == "1":
-        print("STARTTTT ")
         state = start_new_game()
 
     elif choice == "2":
@@ -27,8 +26,17 @@ def main():
         else:
             print("\nAvailable saves:")
             for row in saves:
-                data = json.loads(row[2])
-                print(f"Slot {row[0]}: Location: {data['location']['name']}, Day: {data['day']}")
+                try:
+                    save_id = row[0]
+                    data = row[1]  
+                    
+                    if data:
+                        print(f"Slot {save_id}: Location: {data.get('location', {}).get('name', 'Unknown')}, Day: {data.get('day', 'Unknown')}")
+                    else:
+                        print(f"Slot {save_id}: Corrupted save data")
+                except Exception as e:
+                    print(f"Slot {row[0]}: Error - {e}")
+            
             slot = input("Choose save slot to load from: ")
             try:
                 slot = int(slot)
@@ -37,9 +45,16 @@ def main():
                     state = start_new_game()
                 else:
                     state = load_game(conn, slot)
-            except:
+                    if state is None:
+                        print("Failed to load save, starting new game.")
+                        state = start_new_game()
+            except ValueError:
                 print("Invalid selection, starting new game.")
                 state = start_new_game()
+
+    if state is None:
+        print("Something went wrong, starting new game.")
+        state = start_new_game()
 
     engine = GameEngine(state)
     result = engine.run()
