@@ -1,36 +1,44 @@
 import random
 import math
 
+# Team's average moraleImpact determines popularity boost (0.1x to 1x multiplier)
 def calc_popularity_increase(state):
     avg = sum(m["moraleImpact"] for m in state.team) / len(state.team)
     return round((avg * random.uniform(0.1, 1)),2)
 
+# Team's average moraleImpact determines morale boost (0.8x to 1.2x multiplier)
 def calc_morale_increase(state):
     avg = sum(m["moraleImpact"] for m in state.team) / len(state.team)
     return round((avg * random.uniform(0.8, 1.2)),2)
 
+# Productivity and morale determine funding raised ($0 to $500k+ with high variance)
 def calc_funding_increase(state):
     prod = sum(m["productivity"] for m in state.team) / len(state.team)
     morale = sum(m["moraleImpact"] for m in state.team) / len(state.team)
 
     return round((100000 * (prod/10) * (1 + morale/10) * random.uniform(0.5, 5)),2)
 
+# Each team member costs $6-25 for a meal
 def calc_restaurant_cost(state):
     return round((random.uniform(6, 25) * len(state.team)),2)
 
+# Each team member costs $10-50 for entertainment
 def calc_fun_cost(state):
     return round((random.uniform(10, 50) * len(state.team)),2)
 
+# Random morale loss between 1-3 points
 def calc_morale_decrease():
     return round(random.uniform(1,3))
 
+# Higher team morale reduces daily popularity decay (can reach zero decay)
 def calc_popularity_decay(state):
     avg_morale = sum(m["moraleImpact"] for m in state.team) / len(state.team)
     morale_factor = avg_morale / 10
     base_decay = random.uniform(0.05, 0.15)
     decay = base_decay - morale_factor
-    return round(max(decay, 0),2)  # never negative decay
+    return round(max(decay, 0),2)
 
+# Higher productivity lowers fundraising cost; higher team cost increases it
 def calc_fundraising_cost(state):
     avg_prod = sum(m["productivity"] for m in state.team) / len(state.team)
     avg_cost = sum(m["cost"] for m in state.team) / len(state.team)
@@ -40,6 +48,7 @@ def calc_fundraising_cost(state):
         0
     ),2)
 
+# Euclidean distance between two geographic coordinates
 def calc_distance(loc1, loc2):
     lat1 = float(loc1["lat"])
     lon1 = float(loc1["lon"])
