@@ -32,7 +32,11 @@ def main():
             slot = input("Choose save slot to load from: ")
             try:
                 slot = int(slot)
-                state = load_game(conn, slot)
+                if slot < 1:  
+                    print("Invalid selection, starting new game.")
+                    state = start_new_game()
+                else:
+                    state = load_game(conn, slot)
             except:
                 print("Invalid selection, starting new game.")
                 state = start_new_game()
