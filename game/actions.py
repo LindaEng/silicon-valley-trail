@@ -26,7 +26,7 @@ from ui.display import styled_input, print_characters_grid, print_travel_summary
 
 # Service imports
 from services.map_service import get_location, get_nearby
-from services.ai_service import get_fun_fact, create_intro, create_character_lore, get_action_fact
+from services.ai_service import get_fun_fact, create_intro, create_character_lore, get_action_fact, create_ipo_lore, create_ipo_failure_lore
 
 
 def load_splash():
@@ -362,7 +362,9 @@ def attempt_IPO(state):
     print("Attempting IPO..."); time.sleep(1); print("...Causing a huge ruckus in town"); time.sleep(1)
     
     if total_score >= 0.8:
-        print("IPO successful 🚀")
+        print(create_ipo_lore(state))
+        print("\n🏆 CONGRATULATIONS! YOU WON! 🏆")
         return True
-    print("IPO failed — not enough traction")
+    print(create_ipo_failure_lore(state))
+    print("\nKeep building. Your IPO moment will come!")
     return False
