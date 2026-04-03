@@ -56,7 +56,13 @@ def start_new_game():
     if location_data:
         print(f"You chose: {location}")
     else:
-        print("Location not found, using raw input")
+        print("Location not found, defaulting to San Francisco.")
+        location_data = get_location("San Francisco") or {
+            "name": "San Francisco",
+            "lat": "37.7749",
+            "lon": "-122.4194",
+        }
+        location = location_data["name"]
     
     print("------------------------------")
     print(f"Location: {location}", create_intro(location))
@@ -68,9 +74,9 @@ def start_new_game():
     # Create game state
     new_game_state = GameState(
         team=team, 
-        location=location_data or {"name": location}
+        location=location_data
     )
-    new_game_state.locations_visited.append(location)
+    new_game_state.locations_visited.append(location_data["name"])
     
     
     return new_game_state
@@ -134,7 +140,8 @@ def check_team(state):
        
 
 def explore_city(location, state):
-    print(f"{location["name"]}: ", get_fun_fact(location))
+    city_name = location.get("name", "Unknown location")
+    print(f"{city_name}: ", get_fun_fact(city_name))
     print("=================\n\nWhat would you like to do?\n")
     menu_items = {
         "1": ("Find cafes/restaurants", "restaurants", choose_cafe_restaurants),
@@ -154,6 +161,11 @@ def explore_city(location, state):
     if choice not in menu_items:
         print("Invalid choice")
         return
+
+    if "lat" not in location or "lon" not in location:
+        print("Current location has no map coordinates. Travel to a valid city first.")
+        return
+
     print("Looking up some spots! ")
     time.sleep(2)
     _, category, handler = menu_items[choice]
@@ -336,9 +348,14 @@ def update_to_next_location(state):
         random_blessing(state)
     elif event_roll >= 8:
         random_curse(state)
+    else:
+        team_boost = random.randint(1, 3)
+        state.morale += team_boost
+        print(f"Team event: quiet travel day, morale +{team_boost} from a strong planning session")
     
-    state.morale -= calc_morale_decrease()
-    state.popularity -= calc_popularity_decay(state)
+    if state.team:
+        state.morale -= calc_morale_decrease()
+        state.popularity -= calc_popularity_decay(state)
     
     # Finalize
     state.location = found_location

@@ -20,7 +20,7 @@ class GameEngine:
         print("3. Next destination")
         print("4. Save and Quit")
         
-        if len(self.state.locations_visited) > 5:
+        if len(self.state.locations_visited) >= 10:
             print("5. Attempt IPO")
         
         print("==========================")
@@ -43,7 +43,7 @@ class GameEngine:
             update_to_next_location(self.state)
         elif choice == "4":
             return "exit"
-        elif choice == "5" and len(self.state.locations_visited) > 5:
+        elif choice == "5" and len(self.state.locations_visited) >= 10:
             result = attempt_IPO(self.state)
             if result:
                 print("YOU WON! Thank you for playing")

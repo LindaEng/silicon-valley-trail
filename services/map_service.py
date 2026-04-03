@@ -16,8 +16,18 @@ def get_location(query):
     headers = {
         "User-Agent": "silicon-trail-app"
     }
-    response = requests.get(NOMINATIM_URL, params=params, headers=headers)
-    data = response.json()
+    try:
+        response = requests.get(
+            NOMINATIM_URL,
+            params=params,
+            headers=headers,
+            timeout=10
+        )
+        response.raise_for_status()
+        data = response.json()
+    except (requests.exceptions.RequestException, json.JSONDecodeError):
+        return None
+
     if not data:
         return None
     result = data[0]

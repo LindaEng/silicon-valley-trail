@@ -155,9 +155,9 @@ def test_handle_choice_invalid():
 
 
 def test_handle_choice_ipo_available():
-    """Test IPO option appears after 5 locations visited"""
+    """Test IPO option appears after 10 locations visited"""
     state = GameState()
-    state.locations_visited = ["A", "B", "C", "D", "E", "F"]  # 6 locations
+    state.locations_visited = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
     engine = GameEngine(state)
     
     with patch('game.engine.attempt_IPO', return_value=True):
@@ -167,9 +167,9 @@ def test_handle_choice_ipo_available():
 
 
 def test_handle_choice_ipo_not_available():
-    """Test IPO option not available before 5 locations"""
+    """Test IPO option not available before 10 locations"""
     state = GameState()
-    state.locations_visited = ["A", "B", "C"]  # Only 3 locations
+    state.locations_visited = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
     engine = GameEngine(state)
     
     result = engine.handle_choice("5")

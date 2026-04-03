@@ -210,12 +210,19 @@ def create_ipo_lore(game_state) -> str:
     
     headers = {"Authorization": f"Bearer {hf_token}"}
     
-    # Gather context about the game state
-    total_productivity = sum(m.get('productivity', 0) for m in game_state.team)
-    total_skill = sum(m.get('skill', 0) for m in game_state.team)
-    avg_morale = sum(m.get('morale', 100) for m in game_state.team) / len(game_state.team)
-    cities_count = len(game_state.locations_visited)
-    funding = game_state.funding
+    # Gather context about the game state, even for lightweight test doubles.
+    team = getattr(game_state, "team", []) or []
+    locations_visited = getattr(game_state, "locations_visited", []) or []
+    funding = getattr(game_state, "funding", 0)
+    morale = getattr(game_state, "morale", 0)
+
+    total_productivity = sum(m.get('productivity', 0) for m in team)
+    total_skill = sum(m.get('skill', 0) for m in team)
+    if team:
+        avg_morale = sum(m.get('morale', 100) for m in team) / len(team)
+    else:
+        avg_morale = morale
+    cities_count = len(locations_visited)
     
     # Determine team strength
     if total_productivity >= 70:
@@ -274,9 +281,11 @@ Make it epic and exciting!"""
 def _get_ipo_fallback(game_state) -> str:
     """Fallback IPO messages based on game state"""
     
-    total_productivity = sum(m.get('productivity', 0) for m in game_state.team)
-    cities_count = len(game_state.locations_visited)
-    funding = game_state.funding
+    team = getattr(game_state, "team", []) or []
+    locations_visited = getattr(game_state, "locations_visited", []) or []
+    funding = getattr(game_state, "funding", 0)
+    total_productivity = sum(m.get('productivity', 0) for m in team)
+    cities_count = len(locations_visited)
     
     # Success scenarios (high funding/good team)
     if funding > 1000000 and total_productivity > 60:

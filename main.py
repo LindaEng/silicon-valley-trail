@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+
 from db.database import init_db, get_connection
 from db.saves import save_game, load_game, list_saves
 from game.actions import load_splash, start_new_game, load_characters, choose_team
@@ -5,6 +7,8 @@ from game.state import GameState
 from game.engine import GameEngine
 
 import json
+
+load_dotenv()
 
 def main():
     conn = get_connection()

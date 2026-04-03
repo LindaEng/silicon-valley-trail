@@ -47,19 +47,21 @@ def print_travel_summary(state, travel_cost, location):
 from tabulate import tabulate
 
 def print_summary(state):
-    """Print game summary using tabulate"""
-    # Create a formatted string for cities with line breaks
+    """Print game summary"""
+    
+    print("\n" + "="*50)
+    print("📊 GAME SUMMARY")
+    print("="*50)
+    print(f"💰 Funding:    ${state.funding:,.2f}")
+    print(f"😊 Morale:     {state.morale:.1f}%")
+    print(f"👥 Team size:  {len(state.team)}")
+    print(f"⭐ Popularity: {state.popularity:.1f}%")
+    print("-"*50)
+    print("🏙️  Cities Visited:")
+    
     if state.locations_visited:
-        cities_display = "\n".join([f"  • {city}" for city in state.locations_visited])
+        for city in state.locations_visited:
+            print(f"   • {city}")
     else:
-        cities_display = "None"
-    
-    table_data = [
-        ["💰 Funding:", f"${state.funding:.2f}"],
-        ["😊 Morale:", f"{state.morale:.2f}"],
-        ["👥 Team size:", len(state.team)],
-        ["⭐ Popularity:", f"{state.popularity:.2f}"],
-        ["🏙️ Cities Visited:", cities_display]
-    ]
-    
-    print("\n" + tabulate(table_data, tablefmt="grid"))
+        print("   • None")
+    print("="*50 + "\n")
